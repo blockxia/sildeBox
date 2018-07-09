@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+      /*  *
+        {
+            margin: 0;
+            padding: 0;
+        }
+*/
+
+    </style>
+</head>
+<body>
+
+    <script>
+        /*
+        * document.body.clientWidth  body的宽度，因为行默认有宽度，因此这个值为宽度body的宽度值，
+        *    因为body的margin和padding有默认值，因此初始如果没有设置margin和padding为0时，
+        *    宽度并不是最大文档宽度
+        *document.body.clientHeight  body的高度，跟随body中的内容改变而增大，初始是0
+        *document.documentElement.clientWidth 当前窗口中文档的默认宽度
+        *document.documentElement.clientHeight 当前窗口中文档的默认高度
+        *    这两个值是随着窗口宽高改变而变化的
+        * */
+//        console.log(document.body.clientWidth,document.body.clientHeight);
+//        console.log(document.documentElement.clientWidth,document.documentElement.clientHeight)
+   var bn=document.createElement("button");
+   bn.textContent="添加";
+   document.body.appendChild(bn);
+   bn.addEventListener("click",clickHandler);
+
+   function clickHandler(e) {
+       e=e || window.event;
+       var obj={};
+       obj.width=Math.floor(Math.random()*50+50)+"px";
+       obj.height=Math.floor(Math.random()*50+50)+"px";
+       obj.backgroundColor=randomColor(Math.random()*0.5+0.5);
+       obj.position="absolute";
+       obj.left=Math.random()*(document.documentElement.clientWidth-parseInt(obj.width))+"px";
+       obj.top=Math.random()*(document.documentElement.clientHeight-parseInt(obj.height))+"px";
+       createDiv(obj,document.body);
+
+   }
+
+   
+   function createDiv(style,parent) {
+       var div=document.createElement("div");
+       for(var str in style){
+           div.style[str]=style[str];
+       }
+       parent.appendChild(div);
+   }
+   
+   function randomColor(alpha) {
+       if(!alpha && alpha!==0){
+           alpha=1;
+       }
+       var col="rgba(";
+       for(var i=0;i<3;i++){
+           col+=Math.floor(Math.random()*256)+",";
+       }
+       col+=alpha+")";
+       return col;
+   }
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        /*  *
+          {
+              margin: 0;
+              padding: 0;
+          }
+  */
+        div{
+            position: absolute;
+            background-color: transparent;
+
+        }
+    </style>
+</head>
+<body>
+
+<script>
+    /*
+    * document.body.clientWidth  body的宽度，因为行默认有宽度，因此这个值为宽度body的宽度值，
+    *    因为body的margin和padding有默认值，因此初始如果没有设置margin和padding为0时，
+    *    宽度并不是最大文档宽度
+    *document.body.clientHeight  body的高度，跟随body中的内容改变而增大，初始是0
+    *document.documentElement.clientWidth 当前窗口中文档的默认宽度，
+    *document.documentElement.clientHeight 当前窗口中文档的默认高度
+    *    这两个值是随着窗口宽高改变而变化的
+    * */
+    //        console.log(document.body.clientWidth,document.body.clientHeight);
+    //        console.log(document.documentElement.clientWidth,document.documentElement.clientHeight)
+    var mouse=document.createElement("button");
+    mouse.style.width="1360px";
+    mouse.style.height="900px";
+    //
+    mouse.style.border="transparent";
+    mouse.style.backgroundColor="transparent";
+    //   mouse.textContent="";
+    document.body.appendChild(mouse);
+
+    mouse.addEventListener("click",clickHandler);
+
+
+    function clickHandler(e) {
+        e=e || window.event;
+        var obj={};
+        obj.width="50px";
+        obj.height="50px";
+        obj.backgroundColor=randomColor(Math.random()*0.5+0.5);
+        obj.position="absolute";
+        obj.left=Math.random()*(document.documentElement.clientWidth-parseInt(obj.width))+"px";
+        obj.top=Math.random()*(document.documentElement.clientHeight-parseInt(obj.height))+"px";
+        createDiv(obj,document.body);
+    }
+    function createDiv(style,parent) {
+        var div=document.createElement("div");
+        for(var str in style){
+            div.style[str]=style[str];
+        }
+        parent.appendChild(div);
+    }
+
+
+    function randomColor(alpha) {
+        if(!alpha&&alpha!==0){
+            alpha=1;
+        }
+        var col="rgba(";
+        for(var i=0;i<3;i++){
+            col+=Math.floor(Math.random()*256)+",";
+        }
+        col+=alpha+")";
+        return col;
+    }
+
+</script>
+</body>
+</html>

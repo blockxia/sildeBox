@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        div{
+            width:0;
+            height:20px;
+            /*background-color: #a8ff70;*/
+           background: linear-gradient(to bottom, #d82de2, #3ebaff);
+        }
+    </style>
+</head>
+<body>
+<!--创建一个div-->
+<div></div>
+<script>
+   //创建一个空数组
+var arr=[];
+//创建照片空数组
+var imgList=[];
+//循环照片把照片添加到新空数组的尾部
+for(var i=1;i<80;i++){
+    arr.push("img/img/"+i+"-.jpg");
+}
+//定义sum的初始值为0
+var sum=0;
+//   创建一个新的图片
+var img=new Image();
+//对照片进行加载侦听
+img.addEventListener("load",loadHandler);
+//设置照片的地址为数组的第一位
+img.src=arr[0];
+//创建加载函数
+function loadHandler(e) {
+    e=e||window.event;
+//    定义照片并浅克隆，即当第一张照片加载完后在对下一张进行克隆一个div进行加载
+    var imgs=this.cloneNode(false);
+//    把加载完的照片添加到照片新数组中
+    imgList.push(imgs);
+//    让数量循环
+    sum++;
+//    当bool值为true时执行函数
+    bool=true;
+//    如果数量大于最后一张时跳出循环
+    if(sum>arr.length-1){
+        console.log(imgList);
+        return;
+    }
+//    然后把照片地址都放在新的数组
+    this.src=arr[sum];
+}
+//获取div元素
+var div=document.querySelector("div");
+//函数时间间隔，每16毫秒执行一次动画
+setInterval(animation,16);
+//定义bool值为false,
+var bool=false;
+//执行动画函数，如果为true时跳出循环
+function animation(){
+    if(!bool) return;
+//如果div的窗口宽度大于照片总数时的5倍时，bool=false,跳出循环
+    if (div.offsetWidth>sum*5){
+        bool=false;
+        return;
+
+    }
+//    div的宽度每次动画向右增加5px
+    div.style.width=div.offsetWidth+5+"px";
+}
+</script>
+</body>
+</html>

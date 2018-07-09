@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        div
+        {
+            width: 100px;
+            height: 100px;
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+<input type="text" id="inputs" class="in" name="texts">
+    <script>
+        /*
+        *    父元素.replaceChild(新元素，需要替换掉旧元素);
+        *   原元素.cloneNode(深浅布尔值) 如果是true 深复制，包括标签的元素和内容
+        *                             如果是false 浅复制，只复制标签及属性
+        *
+        *     var img=new Image();  图片使用new Image()可以新建
+        *     img.src="地址"；
+        *
+        *    dom元素.setAttribute(属性名，属性值) 设置dom元素的html标签属性，只允许字符型
+        *    dom元素.getAttribute(属性名) 获取dom元素的html标签属性，值是字符型
+        *    dom元素.removeAttribute(属性名) 删除dom元素的html标签属性
+        *                     不能删除dom对象的属性
+        * */
+        var div=document.createElement("div");
+        div.textContent="1";
+        document.body.appendChild(div);
+
+        var p=document.createElement("p");
+        p.textContent="2";
+//        document.body.replaceChild(p,div);
+        document.body.appendChild(p);
+
+        document.body.appendChild(div.cloneNode(true));
+
+//        var img=document.createElement("img");
+//        img.src="";
+        var img=new Image();
+        img.src="";
+        document.body.appendChild(img);
+
+        var inputs=document.getElementById("inputs");
+        inputs.sum=5;
+        inputs.className="";
+        inputs.class="ab";
+        inputs.name="cde";
+        inputs.id="aaaa";
+        inputs.setAttribute("class","ls");
+        inputs.setAttribute("sum-price","5");
+        var cla=inputs.getAttribute("class");
+        inputs.removeAttribute("sum-price");
+        inputs.removeAttribute("sum");
+        delete inputs.sum;//删除对象属性
+        console.log(inputs.sum);
+        console.log(inputs.name,cla);
+
+        document.body.appendChild(inputs.cloneNode(false));
+    </script>
+</body>
+</html>

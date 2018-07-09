@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+//    定义照片容器
+    var imgCon;
+//    定义轮播左按钮
+    var leftBn;
+//    定义轮播右按钮
+    var rightBn;
+//    定义ul，小圆点外容器
+    var ul;
+//    初始位置定义
+    var position=0;
+//    定义照片数组
+    var arr=["img/a.jpeg","img/b.jpeg","img/c.jpeg","img/d.jpeg","img/e.jpeg"]
+//初始化定义
+     initView();
+//    初始设置圆点显示
+    setLiBgColor(position);
+//    初始化轮播显示内容
+    function initView() {
+//        创建外容器，设置样式并溢出隐藏，设置相对位置
+        var rollDiv=createDiv({width:"960px",height:"320px",position:"relative",margin:"auto",overflow:"hidden"},document.body);
+//     创建图片容器，设置样式
+        imgCon=createDiv({width:"4800px",height:"320px",position:"absolute",transition:"all 1s"},rollDiv);
+//       使用循环函数，把图片放在图片容器
+        for(var i=0;i<arr.length;i++){
+            createImg({width:"960px",height:"320px"},arr[i],imgCon);
+        }
+//        创建左按钮和右按钮，设置样式
+        leftBn=createImg({position:"absolute",left:"10px"},"img/left.png",rollDiv);
+        rightBn=createImg({position:"absolute",right:"10px"},"img/right.png",rollDiv);
+       leftBn.style.top=rightBn.style.top=(rollDiv.offsetHeight-60)/2+"px";
+//       对左右按钮进行点击事件
+        leftBn.addEventListener("click",clickHandler);
+        rightBn.addEventListener("click",clickHandler);
+//      创建ul容器，设置样式及小圆点样式
+       ul=createUl(arr.length,
+            {listStyle:"none",position:"absolute",bottom:"10px",textAlign:"center"},
+            {float:"left",width:"20px",height:"20px",marginLeft:"10px",borderRadius:"10px",
+                border:"1px solid #FF0000",backgroundColor:"rgba(255,0,0,0.5)",lineHeight:"20px"},
+            rollDiv);
+//       设置ul外容器居中显示
+        ul.style.left=(rollDiv.offsetWidth-ul.offsetWidth)/2+"px";
+
+    }
+//    创建div函数，设置div的样式，返回div
+        function createDiv(style,parent) {
+            var div=document.createElement("div");
+            setStyle(div,style);
+            parent.appendChild(div);
+            return div;
+    }
+//    创建图片函数，创建新函数，设置图片地址，和样式返回新图片
+        function createImg(style,src,parent) {
+            var img=new Image();
+            img.src=src;
+            setStyle(img,style);
+            parent.appendChild(img);
+            return img;
+        }
+//        设置样式，所有的标签样式
+        function setStyle(elem,style) {
+            for(var str in style){
+                elem.style[str]=style[str];
+            }
+        }
+//        创建ul循环函数
+        function createUl(num,ulStyle,LiStyle,parent) {
+        var ul=document.createElement("ul");
+        setStyle(ul,ulStyle);
+        for(var i=0;i<num;i++){
+            var li=document.createElement("li");
+            setStyle(li,LiStyle);
+            li.textContent=i+1;
+            ul.appendChild(li);
+           li.addEventListener("click",liClickHandler);
+        }
+            parent.appendChild(ul);
+            return ul;
+        }
+//        对小圆点进行监听事件
+        function liClickHandler(e) {
+        e=e||window.event;
+        for(var i=0;i<ul.children.length;i++){
+//            如果ul里的li为当前点击时就跳出循环
+            if(ul.children[i]===this){
+                position=i;
+                break;
+            }
+        }
+//        图片左移-960px
+       imgCon.style.left=-position*960+"px";
+//           此时显示小圆点位置为当前
+            setLiBgColor(position);
+    }
+   /* 创建监听点击事件，当点击左按钮时位置减去，如果点击到小于第一张时，
+   * 此时回到最后一张，否则如果点击右按钮就图片加一，如果图片到最后一张时，让
+   * 其回到第一张
+   * */
+    function clickHandler(e) {
+        e=e||window.event;
+        if(this===leftBn){
+            position--;
+            if(position<0) position=4;
+        }else if(this===rightBn){
+            position++;
+            if(position>4) position=0;
+        }
+//     设置图片向左移动-960px
+        imgCon.style.left=-position*960+"px";
+//       并且此时小圆点为当前
+        setLiBgColor(position);
+    }
+//    创建循环函数，设置小圆点背景变化
+    function setLiBgColor(s) {
+        for(var i=0;i<ul.children.length;i++){
+        ul.children[i].style.backgroundColor="rgba(255,0,0,0.5)";
+        }
+        ul.children[s].style.backgroundColor="rgba(255,0,0,0)";
+    }
+</script>
+</body>
+</html>

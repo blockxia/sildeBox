@@ -1,0 +1,242 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        *
+        {
+            margin: 0;
+            padding: 0;
+        }
+        table
+        {
+            width: 1920px;
+            height: 960px;
+            border-collapse: collapse;
+            position: absolute;
+        }
+        td
+        {
+            width: 33px;
+            height: 33px;
+            background-size: 100% 100%;
+            border: solid 1px #000000;
+        }
+
+        div
+        {
+            width: 32px;
+            height: 33px;
+            background-image: url(img/Actor01-Braver03.png);
+            position: absolute;
+        }
+
+    </style>
+</head>
+<body>
+<script>
+    const UP="up";
+    const DOWN="down";
+    const LEFT="left";
+    const RIGHT="right";
+    var state="";
+    var map=[
+        [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
+        [2,-1,9,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,2],
+        [2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,2],
+        [2,1,1,1,1,4,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,3,3,3,3,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,2],
+        [2,1,1,1,1,1,3,3,3,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,2],
+        [2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,2,1,1,1,1,1,1,1,0,0,2],
+        [2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,2,1,1,1,1,1,1,1,0,0,2],
+        [2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,2,1,1,1,1,1,1,1,0,0,2],
+        [2,1,1,1,1,1,1,1,1,1,1,1,3,1,1,1,1,0,0,1,1,1,1,1,1,1,1,3,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,2,1,1,1,1,1,1,1,0,0,2],
+        [2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,2,1,1,1,1,1,1,1,0,0,2],
+        [2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,2,1,1,1,1,1,1,1,0,0,2],
+        [2,2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,0,0,0,0,0,2],
+        [2,2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,0,0,0,0,0,2],
+        [2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,2,1,1,1,1,1,1,1,0,0,2],
+        [2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,2,1,1,1,1,1,1,1,0,0,2],
+        [2,1,1,1,1,1,3,3,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,3,3,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,2,1,1,1,1,1,1,1,0,0,2],
+        [2,1,1,1,1,1,3,3,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,2,1,1,1,1,1,1,1,0,0,2],
+        [2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,2,1,1,1,1,1,1,1,0,0,2],
+        [2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,2,1,1,1,1,1,1,1,0,0,2],
+        [2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,3,3,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,2],
+        [2,1,1,1,1,1,1,1,1,1,1,3,3,3,1,1,1,0,0,1,1,1,1,1,1,1,1,3,3,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,2],
+        [2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,2],
+        [2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,2],
+        [2,2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,0,0,0,0,0,2],
+        [2,2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,0,0,1,1,1,2],
+        [2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,2],
+        [2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2],
+        [2,1,1,1,1,1,1,1,1,1,1,1,3,1,1,1,1,0,0,1,1,1,1,1,1,1,1,3,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2],
+        [2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,-2,2],
+        [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2]
+    ];
+
+    var avatars=document.createElement("div");
+
+    var table=document.createElement("table");
+    for(var i=0;i<map.length;i++){
+        var tr=document.createElement("tr");
+        for(var j=0;j<map[i].length;j++){
+            var td=document.createElement("td");
+            switch (map[i][j]){
+                case 0:
+                    td.style.backgroundImage="url(img/item_0.png)";
+                    break;
+                case 1:
+                    var random=Math.floor(Math.random()*3);
+                    td.style.backgroundImage="url(img/item_1"+random+".png)";
+                    break;
+                case 2:
+                    td.style.backgroundImage="url(img/item_2.png)";
+
+                    break;
+                case 3:
+                    var random=Math.floor(Math.random()*3);
+                    td.style.backgroundImage="url(img/item_1"+random+".png)";
+                    var tree=new Image();
+                    tree.src="img/item_3.png";
+                    tree.style.width="33px";
+                    tree.style.height="33px";
+                    td.appendChild(tree);
+                    break;
+                case 4:
+                    td.style.backgroundImage="url(img/item_4.png)";
+                    break;
+                case -1:
+                    var random=Math.floor(Math.random()*3);
+                    td.style.backgroundImage="url(img/item_1"+random+".png)";
+                    var begin=new Image();
+                    begin.src="img/item_-1.png";
+                    begin.style.width="33px";
+                    begin.style.height="33px";
+                    td.appendChild(begin);
+                    break;
+                case -2:
+                    var random=Math.floor(Math.random()*3);
+                    td.style.backgroundImage="url(img/item_1"+random+".png)";
+                    var target=new Image();
+                    target.src="img/item_-2.png";
+                    target.style.width="33px";
+                    target.style.height="33px";
+                    td.appendChild(target);
+                    break;
+                case 9:
+                    var random=Math.floor(Math.random()*3);
+                    td.style.backgroundImage="url(img/item_1"+random+".png)";
+                    avatars.indexY=i;
+                    avatars.indexX=j;
+                    avatars.style.left=avatars.indexX*33+"px";
+                    avatars.style.top=avatars.indexY*33+"px";
+                    break;
+
+            }
+            tr.appendChild(td)
+        }
+        table.appendChild(tr);
+    }
+    document.body.appendChild(table)
+    document.body.appendChild(avatars);
+    window.addEventListener("keydown",keyDownHandler);
+    //        window.addEventListener("keyup",keyDownHandler);
+    function keyDownHandler(e) {
+        if(!e){
+            e=window.event;
+        }
+        e.preventDefault()
+        if(e.type=="keydown"){
+            bool=true;
+        }else if(e.type=="keyup"){
+            bool=false;
+        }
+        switch (e.keyCode)
+        {
+            case 37:
+//                        left
+                if(map[avatars.indexY][avatars.indexX-1]==2 || map[avatars.indexY][avatars.indexX-1]==3) return;
+                if(map[avatars.indexY][avatars.indexX-1]==4){
+                    if(map[avatars.indexY][avatars.indexX-2]==2 || map[avatars.indexY][avatars.indexX-2]==3) return;
+                    var td=table.children[avatars.indexY].children[avatars.indexX-1];
+                    td.style.backgroundImage="url(img/item_10.png)";
+                    map[avatars.indexY][avatars.indexX-1]=1;
+                    var nexttd=table.children[avatars.indexY].children[avatars.indexX-2];
+                    nexttd.style.backgroundImage="url(img/item_4.png)";
+                    map[avatars.indexY][avatars.indexX-2]=4
+                }
+                avatars.indexX--;
+                if(avatars.indexX<0){
+                    avatars.indexX=0;
+                }
+                state=LEFT;
+                avatars.style.backgroundPositionY="-33px";
+                break;
+            case 38:
+//                        up
+                if(map[avatars.indexY-1][avatars.indexX]==2 || map[avatars.indexY-1][avatars.indexX]==3) return;
+                if(map[avatars.indexY-1][avatars.indexX]==4){
+                    if(map[avatars.indexY-2][avatars.indexX]==2 || map[avatars.indexY-2][avatars.indexX]==3) return;
+                    var td=table.children[avatars.indexY-1].children[avatars.indexX];
+                    td.style.backgroundImage="url(img/item_10.png)";
+                    map[avatars.indexY-1][avatars.indexX]=1;
+                    var nexttd=table.children[avatars.indexY-2].children[avatars.indexX];
+                    nexttd.style.backgroundImage="url(img/item_4.png)";
+                    map[avatars.indexY-2][avatars.indexX]=4
+                }
+                avatars.indexY--;
+                if(avatars.indexY<0){
+                    avatars.indexY=0;
+                }
+                state=UP;
+                avatars.style.backgroundPositionY="-99px";
+                break;
+            case 39:
+//                        right
+                if(map[avatars.indexY][avatars.indexX+1]==2 || map[avatars.indexY][avatars.indexX+1]==3) return;
+                if(map[avatars.indexY][avatars.indexX+1]==4){
+                    if(map[avatars.indexY][avatars.indexX+2]==2 || map[avatars.indexY][avatars.indexX+2]==3) return;
+                    var td=table.children[avatars.indexY].children[avatars.indexX+1];
+                    td.style.backgroundImage="url(img/item_10.png)";
+                    map[avatars.indexY][avatars.indexX+1]=1;
+                    var nexttd=table.children[avatars.indexY].children[avatars.indexX+2];
+                    nexttd.style.backgroundImage="url(img/item_4.png)";
+                    map[avatars.indexY][avatars.indexX+2]=4
+                }
+
+                avatars.indexX++;
+                if(avatars.indexX>map[0].length-1){
+                    avatars.indexX=map[0].length-1;
+                }
+                console.log(avatars.indexX,avatars.indexY)
+                state=RIGHT;
+                avatars.style.backgroundPositionY="-66px";
+                break;
+            case 40:
+//                        down
+                if(map[avatars.indexY+1][avatars.indexX]==2 || map[avatars.indexY+1][avatars.indexX]==3) return;
+                if(map[avatars.indexY+1][avatars.indexX]==4){
+                    if(map[avatars.indexY+2][avatars.indexX]==2 || map[avatars.indexY+2][avatars.indexX]==3) return;
+                    var td=table.children[avatars.indexY+1].children[avatars.indexX];
+                    td.style.backgroundImage="url(img/item_10.png)";
+                    map[avatars.indexY+1][avatars.indexX]=1;
+                    var nexttd=table.children[avatars.indexY+2].children[avatars.indexX];
+                    nexttd.style.backgroundImage="url(img/item_4.png)";
+                    map[avatars.indexY+2][avatars.indexX]=4
+                }
+                avatars.indexY++;
+                if(avatars.indexY>map.length-1){
+                    avatars.indexY=map.length-1;
+                }
+                state=DOWN;
+                avatars.style.backgroundPositionY="0px";
+                break
+        }
+
+        avatars.style.left=table.children[avatars.indexY].children[avatars.indexX].offsetLeft+"px";
+        avatars.style.top=table.children[avatars.indexY].children[avatars.indexX].offsetTop+"px";
+    }
+</script>
+</body>
+</html>

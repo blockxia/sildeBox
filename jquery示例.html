@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script type="text/javascript" src="./jquery-1.12.3.js"></script>
+  <script type="text/javascript" src="./jquery.slideBox.js"></script>
+  <link rel="stylesheet" href="./jquery.slideBox.css">
+  <script type="text/javascript">
+    $(function () {
+      //方式一轮播
+      $('#demo1').slideBox({
+        direction:'left',
+        duration:0.6,
+        easing: 'swing',//swing,linear
+        delay: 3,//unit:seconds
+        startIndex: 0,
+        hideClickBar: true,
+        clickBarRadius: 50,//unit:px
+        hideBottomBar: false,
+        width: 500,
+        height: 300
+      });
+      //方式二轮播
+      $('#demo2').slideBox({
+        direction:'top',
+        duration:1,
+        easing: 'linear',
+        delay: 1,//unit:seconds
+        startIndex: 2,
+        hideClickBar: false,
+        clickBarRadius: 50,//unit:px
+        hideBottomBar: false,
+        width: 500,
+        height: 300
+      })
+
+
+    })
+  </script>
+</head>
+<body>
+<div id="demo1" class="slideBox">
+  <ul class="items">
+    <li><a href="http://www.jq22.com/" title="这里是测试标题一"><img src="img/a.jpeg"></a></li>
+    <li><a href="http://www.jq22.com/" title="这里是测试标题二"><img src="img/b.jpeg"></a></li>
+    <li><a href="http://www.jq22.com/" title="这里是测试标题三"><img src="img/c.jpeg"></a></li>
+    <li><a href="http://www.jq22.com/" title="这里是测试标题四"><img src="img/d.jpeg"></a></li>
+    <li><a href="http://www.jq22.com/" title="这里是测试标题五"><img src="img/e.jpeg"></a></li>
+  </ul>
+</div>
+<h3>二、上下轮播，滚动持续0.3秒，滚动延迟5秒，滚动效果linear，初始焦点第2张，点选按键自动隐藏</h3>
+<div id="demo2" class="slideBox">
+  <ul class="items">
+    <li><a href="http://www.jq22.com/" title="这里是测试标题一"><img src="img/a.jpeg"></a></li>
+    <li><a href="http://www.jq22.com/" title="这里是测试标题二"><img src="img/b.jpeg"></a></li>
+    <li><a href="http://www.jq22.com/" title="这里是测试标题三"><img src="img/c.jpeg"></a></li>
+    <li><a href="http://www.jq22.com/" title="这里是测试标题四"><img src="img/d.jpeg"></a></li>
+    <li><a href="http://www.jq22.com/" title="这里是测试标题五"><img src="img/e.jpeg"></a></li>
+  </ul>
+</div>
+<h3>三、左右轮播，滚动持续0.3秒，滚动延迟5秒，滚动效果linear，初始焦点第1张，点选按键不隐藏，按键边框半径10px（圆形）</h3>
+<div id="demo3" class="slideBox">
+  <ul class="items">
+    <li><a href="http://www.jq22.com/" title="这里是测试标题一"><img src="img/a.jpeg"></a></li>
+    <li><a href="http://www.jq22.com/" title="这里是测试标题二"><img src="img/b.jpeg"></a></li>
+    <li><a href="http://www.jq22.com/" title="这里是测试标题三"><img src="img/c.jpeg"></a></li>
+    <li><a href="http://www.jq22.com/" title="这里是测试标题四"><img src="img/d.jpeg"></a></li>
+    <li><a href="http://www.jq22.com/" title="这里是测试标题五"><img src="img/e.jpeg"></a></li>
+  </ul>
+</div>
+<h3>四、隐藏底栏</h3>
+<div id="demo4" class="slideBox">
+  <ul class="items">
+    <li><a href="http://www.jq22.com/" title="这里是测试标题一"><img src="img/a.jpeg"></a></li>
+    <li><a href="http://www.jq22.com/" title="这里是测试标题二"><img src="img/b.jpeg"></a></li>
+    <li><a href="http://www.jq22.com/" title="这里是测试标题三"><img src="img/c.jpeg"></a></li>
+    <li><a href="http://www.jq22.com/" title="这里是测试标题四"><img src="img/d.jpeg"></a></li>
+    <li><a href="http://www.jq22.com/" title="这里是测试标题五"><img src="img/e.jpeg"></a></li>
+  </ul>
+</div>
+</body>
+
+</html>

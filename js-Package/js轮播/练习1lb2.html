@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+/*
+定义定位变量
+定义轮播图片数组
+定义开关
+定义轮播方向
+*
+*
+* *///定义图片容器
+    var imgCon;
+    //定义轮播左按钮
+    var leftBn;
+// 定义轮播右按钮
+    var rightBn;
+// 定义列表，小圆点外容器
+    var ul;
+// 定位变量，初始位置
+    var position=0;
+//定义图片数组
+    var arr=["img/a.jpeg","img/b.jpeg","img/c.jpeg","img/d.jpeg","img/e.jpeg"];
+//定义开关
+    var bool=false;
+//定义轮播方向
+    var dic="";
+//初始化显示
+    initView();
+//初始设置圆点显示
+    setLiBgColor(position);
+//设置时间间隔函数，16毫秒执行一次动画函数
+    setInterval(animation,16);
+//初始化轮播显示内容
+    function initView() {
+ //创建外容器，设置样式，并溢出隐藏，设置相对位置，
+        var rollDiv=createDiv({width:"960px",height:"320px",position:"relative",margin:"auto",overflow:"hidden"},document.body);
+//创建图片容器并设置他的样式
+        imgCon=createDiv({width:"1920px",height:"320px",position:"absolute"},rollDiv);
+//第一张照片，设置其大小
+        createImg({width:"960px",height:"320px"},arr[0],imgCon);
+//设置左右按钮的绝对位置
+        leftBn=createImg({position:"absolute",left:"10px"},"img/left.png",rollDiv);
+        rightBn=createImg({position:"absolute",right:"10px"},"img/left.png",rollDiv);
+//左右按钮位置
+        leftBn.style.top=rightBn.style.top=(rollDiv.offsetHeight-60)/2+"px";
+//左右按钮侦听点击事件
+        leftBn.addEventListener("click",clickHandler);
+        rightBn.addEventListener("click",clickHandler);
+//创建小圆点外容器，及小圆点
+        ul=createUl(arr.length,{listStyle:"none",position:"absolute",bottom:"10px",textAlign:"center"},
+            {float:"left",width:"20px",height:"20px",marginleft:"10px",borderRadius:"10px",border:"1px solid #FF0000",backgroundColor:"rgba(255,0,0,0.5)",lineHeight:"20px"},
+        ,rollDiv);
+//设置小圆点外容器位置
+        ul.style.left=(rollDiv.offsetWidth-ul.offsetWidth)/2+"px";
+    }
+//创建div函数
+    function createDiv(style,parent) {
+//创建div
+        var div=document.createElement("div");
+       //设置div样式
+        setStyle(div,style);
+       //把div放在父容器中
+        parent.appendChild(div);
+       //返回div
+        return div;
+    }
+    //创建图片函数
+    function createImg(style,src,parent) {
+      //创建图片
+        var img=new Image();
+        //设置图片地址
+        img.src=src;
+        //设置图片样式
+        setStyle(img,style);
+        //把图片放在父容器中
+        parent.appendChild(img);
+        //返回图片
+        return img;
+    }
+    //设置样式函数elem,style需要设置样式元素和对象
+    function setStyle(elem,style) {
+    //循环对象样式，设置元素的每个样式为这个对象样式中的值
+        for(var str in style){
+        elem.style[str]=style[str];
+    }
+    }
+    //创建小圆点外容器函数，括号里是num需要创建
+//小圆点的数目，ulstyle需要创建ul的样式，及创建li的样式
+//parent 把ul放在这个父容器中
+    function createUl(num,ulStyle,liStyle,parent) {
+        //创建ul
+        var ul = document.createElement("ul");
+        //设置ul的样式
+        setStyle(ul, ulStyle);
+      //循环创建li创建num个
+        for (var i = 0; i < num; i++) {
+            //设置每个li的 样式
+            var li = document.createElement("li");
+            setStyle(li, liStyle);
+          //设置li的内容
+            li.textContent = i + 1;
+         //把li放在ul中
+            ul.appendChild(li);
+          //创建每个li的监听点击事件
+            li.addEventListener("click", liClickHandler);
+        }
+        //把ul放在父容器中
+           parent.appendChild(ul);
+       //返回ul
+        return ul;
+    }
+    //li的点击事件e为事件对象
+    function liClickHandler(e) {
+        e=e||window.event;
+       //如果方向设置了，这个字符变量的长度是大于0时
+        /*表示当前动画正处在过度，不允许点击其他按钮来做另外的轮播，因此
+        * 判断后跳出，不做处理*/
+        if(dic.length>0) return;
+//        设置当前的所在位置就是第几张图片
+        var prePosition=position;
+//        判断当前点击的li是第几个，就知道我们目标让图片轮播到第几张图
+//        设置目标的图片位置为点击的第几个
+        for(var i=0;i<ul.children.length;i++){
+            if(ul.children[i]===this){
+                position=i;
+            }
+        }
+//        执行轮播判断函数，把当前的位置和目标位置带入到参数
+rollImageChange(prePosition,position);
+
+    }
+    //点击左右按钮事件函数
+    function clickHandler(e) {
+        e=e|window.event;
+ /*如果方向设置，这个字符变量的长度大于0时，
+表示当前动画正在处于过渡，不允许点击其它按钮来做另外的轮播，因此
+判断后跳出，不作处理*/
+        if(dic.length>0) return;
+//        设置当前的所在位置就是第几张图片
+        var prePosition=position;
+//        判断当前点击按钮是左按钮还是右按钮，如果左按钮，定位点-1，
+
+        if(this===leftBn){
+         position--;
+/*如果小于0让他为最大*/
+         if(position<0) position=arr.length-1;
+//        设置方向为向右
+         dic="right";
+//            如果右按钮，定位点加1
+
+        }else if(this===rightBn){
+            position++;
+//           如果大于数组的最大-1时让他为0
+            if(position>arr.length-1) position=0;
+//            最小设置方向为向左
+            dic="left";
+        }
+//        执行轮播判断函数，把当前位置和目标位置带入到参数
+        rollImageChange(prePosition,position);
+    }
+//    设置小圆点变化函数，参数s 当前需要变化的小圆点位置
+    function setLiBgColor(s) {
+//        循环ul中所有的小圆点li
+        for(var i=0;i<ul.children.length;i++){
+//       让每个小圆点都设置为红色半透
+        ul.children[i].style.backgroundColor="rgba(255,0,0,0.5)";
+        }
+//       让当前变化位置的小圆点透明
+        ul.children[s].style.backgroundColor="rgba(255,0,0,0)";
+    }
+//设置轮播动画图片切换的判断函数，current当前的图片第几张
+//   target目标变化到图片的第几张
+    function rollImageChange(current,target) {
+//       新建图片
+        var img=new Image();
+//        设置图片为目标图片的地址
+        img.src=arr[target];
+//        设置图片的宽高
+        img.style.width="960px";
+        img.style.height="320px";
+/*如果方向长度未给出，默认仍然是空字符串时，表示这时候
+来自于小圆点点击的部分*/
+        if(dic.length===0){
+/*根据目标和当前位置，判断大小，
+如果目标大于当前位置左移，否则右移*/
+            if(target>current){
+            dic="left";
+            }else{
+                dic="right";
+            }
+        }
+/*如果方向左移把图片追加到图片容器的尾部，并且设置
+图片外容器的位置为0px   */
+        if(dic==="left"){
+            imgCon.style.left="0px";
+            imgCon.appendChild(img);
+/*如果方向是右移，把图片插入到图片容器的头部，
+并且设置图片外容器的位置为-960px     */
+        }else if(dic==="right"){
+            imgCon.style.left="-960px";
+            imgCon.insertBefore(img,imgCon.firstElementChild);
+        }
+//        设置bool为true，开始动画
+        bool=true;
+    }
+//    创建动画函数
+    function animation() {
+//        判断bool是否为false，
+//        如果为false不执行该函数，就是没有动画
+        if(!bool) return;
+//判断方向如果是左移
+        if(dic==="left"){
+/*判断当前位置是否小于-940px，
+满足条件时，表示图片外容器位置移动到符合的位置*/
+            if(imgCon.offsetLeft<-940){
+//bool=false，停止后续的动画，图片容器删除第一个元素，就是原图，并且把容器
+//位置移动到0的位置，设置方向为空，设置当前的小圆点显示位置跳出
+                bool=false;
+                imgCon.style.left="0px";
+                dic="";
+                setLiBgColor(position);
+                return;
+            }
+//如果没有满足条件让图片外容器每次进入该函数时-20像素的位置
+            imgCon.style.left=imgCon.offsetLeft-20+"px";
+//            判断方向如果是右移
+        }else if(dic==="right"){
+//            判断当前位置是否大于-20像素，满足条件时，表示图片外容器位置移动到符合的位置
+            if(imgCon.offsetLeft>-20){
+//bool=false，停止后续的动画，
+                bool=false;
+//                图片容器删除最后一个元素，就是原图
+                imgCon.removeChild(imgCon.lastElementChild);
+//                并且把容器位置移动到0的位置
+                imgCon.style.left="0px";
+//                设置方向为空
+                dic="";
+//                设置当前的小圆点显示位置跳出
+                setLiBgColor(position);
+                return;
+            }
+//如果没有满足条件让图片外容器每次进入该函数时+20像素的位置
+            imgCon.style.left=imgCon.offsetLeft+20+"px";
+        }
+    }
+</script>
+</body>
+</html>

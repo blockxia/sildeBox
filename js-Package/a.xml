@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<root>
+    <man>
+        <pe age="30">张三</pe>
+        <pe age="30">李四</pe>
+    </man>
+    <women>
+        <pe age="18">王五</pe>
+        <pe age="22">小六</pe>
+    </women>
+</root>

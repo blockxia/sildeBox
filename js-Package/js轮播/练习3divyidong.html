@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        div{
+            width: 200px;
+            height: 200px;
+            border: solid 1px #FF0000;
+            position: absolute;
+            background: linear-gradient(to top,lightcoral,blueviolet);
+            border-radius: 150px;
+        }
+    </style>
+</head>
+<body>
+<script>
+var div=document.createElement("div");
+document.body.appendChild(div);
+div.addEventListener("click",clickHandler);
+var bool=false;
+setInterval(animation,16);
+function clickHandler(e) {
+    e=e||window.event;
+    bool=!bool;
+}
+
+function animation() {
+    if(bool) return;
+    div.textContent="点我点我，看我变身";
+    div.style.lineHeight="200px";
+    div.style.textAlign="center";
+    div.style.left=div.offsetLeft+2+"px";
+}
+</script>
+</body>
+</html>

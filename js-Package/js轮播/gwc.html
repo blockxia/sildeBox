@@ -1,0 +1,222 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        table
+        {
+            width: 800px;
+            border-collapse: collapse;
+        }
+        td
+        {
+            border: 1px solid #000000;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<script>
+    var data=[
+        {checked:false,name:"姓名",age:"年龄",sex:"性别",hobby:"爱好",time:"时间",price:"价格",total:"总价",num:0},
+        {checked:false,name:"张三",age:30,sex:"男",hobby:"旅行",time:"2016/3/15",price:35.2,total:'35.20',num:1},
+        {checked:false,name:"王三",age:30,sex:"女",hobby:"旅行,游泳",time:"2016/4/15",price:18.2,total:'18.2',num:1},
+        {checked:false,name:"李三",age:30,sex:"男",hobby:"旅行,打球",time:"2016/5/15",price:30.2,total:'30.2',num:1},
+        {checked:false,name:"赵三",age:30,sex:"女",hobby:"读书",time:"2016/6/15",price:24,total:'24',num:1}
+    ];
+
+    var table=document.createElement("table");
+    document.body.appendChild(table);
+    var reverseSelectedBn=document.createElement("input");
+    reverseSelectedBn.type="button";
+    reverseSelectedBn.value="反选";
+    document.body.appendChild(reverseSelectedBn);
+    reverseSelectedBn.addEventListener("click",reverseSelectedHandler);
+    var addInput=createInputBn("添加");
+    var searchInput=createInputBn("查询");
+    document.body.appendChild(addInput);
+    document.body.appendChild(searchInput);
+    var div=document.createElement("div");
+    div.textContent="总价";
+    document.body.appendChild(div);
+    for(var i=0;i<data.length;i++){
+        var tr;
+        if(i==0){
+            tr=createTr(data[i],true)
+        }else{
+            tr=createTr(data[i])
+        }
+        table.appendChild(tr);
+    }
+
+    function createTr(obj,bool) {
+        var tr=document.createElement("tr");
+        for(var str in obj){
+            var td=document.createElement("td");
+            if(str=="checked"){
+                var check=document.createElement("input");
+                check.type="checkbox";
+                check.checked=obj.checked;
+                check.addEventListener("change",clickHandler)
+                td.appendChild(check)
+            }else if(str=="num") {
+                if(!bool){
+                    var div=createStepInput(obj.num)
+                    td.appendChild(div);
+                }
+            }else {
+                td.textContent=obj[str];
+            }
+            tr.appendChild(td);
+        }
+        return tr;
+    }
+
+    function createStepInput(num) {
+        var div=document.createElement("div");
+        div.appendChild(createBn("-"));
+        var input=document.createElement("input");
+        input.type="text";
+        input.style.width="150px";
+        input.style.height="30px";
+        input.style.textAlign="center";
+        input.value=num;
+        input.addEventListener("input",bnClickHandler)
+        div.appendChild(input);
+        div.appendChild(createBn("+"));
+        return div;
+    }
+
+    function createBn(value) {
+        var bn=document.createElement("input");
+        bn.value=value;
+        bn.type="button";
+        bn.name="buttonName";
+        bn.style.width="30px";
+        bn.style.height="30px";
+        bn.addEventListener("click",bnClickHandler);
+        return bn;
+    }
+    function createInputBn(bnValue) {
+        var div=document.createElement("div");
+        var input=document.createElement("input");
+        input.type="text";
+        var bn=document.createElement("input");
+        bn.type="button";
+        bn.value=bnValue;
+        bn.addEventListener("click",addAndSearchHandler);
+        div.appendChild(input);
+        div.appendChild(bn);
+        return div;
+    }
+    function bnClickHandler(e) {
+        if(!e){
+            e=window.event;
+        }
+        var tr=this.parentElement.parentElement.parentElement;
+        var input;
+        if(e.type=="click"){
+            input=this.parentElement.children[1];
+            if(this.value=="+"){
+                input.value=parseInt(input.value)+1;
+            }else if(this.value=="-" && parseInt(input.value)>0){
+                input.value=parseInt(input.value)-1;
+            }
+        }else if(e.type=="input"){
+            input=this;
+        }
+
+        for(var i=0;i<table.children.length;i++){
+            if(table.children[i]==tr){
+                data[i].num=parseInt(input.value);
+                data[i].total=parseFloat((data[i].price*data[i].num).toFixed(2));
+                data[i].checked=true;
+                tr.children[0].firstElementChild.checked=true;
+                tr.children[7].textContent= data[i].total;
+            }
+        }
+        getTotalPrice();
+
+    }
+
+    function clickHandler(e) {
+        if(!e){
+            e=window.event;
+        }
+        var tr=this.parentElement.parentElement;
+        if(tr==table.children[0]){
+            for(var i=1;i<table.children.length;i++){
+                table.children[i].firstElementChild.firstElementChild.checked=this.checked;
+                data[i].checked=this.checked;
+            }
+            getTotalPrice();
+            return;
+        }
+        if(!this.checked){
+            table.children[0].firstElementChild.firstElementChild.checked=false;
+        }
+        for(var j=1;j<table.children.length;j++){
+            if(tr==table.children[j]){
+                data[j].checked=this.checked;
+            }
+        }
+        getTotalPrice();
+    }
+
+    function reverseSelectedHandler(e) {
+        if(!e){
+            e=window.event;
+        }
+        for(var i=1;i<table.children.length;i++){
+            var check=table.children[i].firstElementChild.firstElementChild;
+            check.checked=!check.checked;
+            data[i].checked=check.checked;
+        }
+        getTotalPrice();
+    }
+    function addAndSearchHandler(e) {
+        if(!e){
+            e=window.event;
+        }
+        var input=this.parentElement.firstElementChild;
+        if(this.value=="添加"){
+            var arr=input.value.split(",");
+            if(arr.length!=7) return;
+            var obj={};
+            obj.checked=false;
+            obj.name=arr[0];
+            obj.age=arr[1];
+            obj.sex=arr[2];
+            obj.hobby=arr[3];
+            obj.time=arr[4];
+            obj.price=Number(arr[5]);
+            obj.total=Number(arr[6]);
+            obj.num=1;
+            data.push(obj);
+            tr=createTr(data[data.length-1])
+            table.appendChild(tr);
+        }else if(this.value=="查询"){
+            for(var i=1;i<table.children.length;i++){
+                var name=table.children[i].children[1].textContent;
+                if(name.indexOf(input.value)>-1){
+                    table.children[i].style.backgroundColor="#FF0000";
+                }else{
+                    table.children[i].style.backgroundColor="#FFFFFF";
+                }
+            }
+        }
+    }
+    function getTotalPrice() {
+        var sum=0;
+        for(var i=0;i<data.length;i++){
+            if(data[i].checked){
+                sum+=data[i].price*data[i].num;
+            }
+        }
+        div.textContent="总价："+sum.toFixed(2);
+    }
+</script>
+</body>
+</html>

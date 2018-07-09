@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        #box{
+            width: 300px;
+            height: 100px;
+            position: absolute;
+            left: 500px;
+            top: 200px;
+            background: #f0044444;
+            font-size: 40px;
+            text-align: center;
+            line-height: 100px;
+            color: #000;
+            border-radius: 10px;
+            outline: none;
+        }
+        #jiangPin{
+            width: 300px;
+            height: 100px;
+            position: absolute;
+            left: 500px;
+            top: 350px;
+            background: #f0044444;
+            font-size: 40px;
+            text-align: center;
+            line-height: 100px;
+            color: #000;
+            border-radius: 10px;
+            outline: none;
+        }
+        #start,#stop{
+
+            width: 80px;
+            height: 30px;
+        }
+    </style>
+    <script src="js%20库/jquery-1.7.2.js" type="text/javascript"></script>
+    <script src="js%20库/jquery-3.2.1.js" type="text/javascript"></script>
+</head>
+<body>
+<button id="start">开始</button>
+<button id="stop">停止</button>
+
+<button id="box">人员名单</button>
+<button id="jiangPin">奖品</button>
+</body>
+<script>
+
+    //初始化人 通过数组存储
+
+    var list=["张三","刘里斯","李四思","server","风力lll","高丽丽","三嘻嘻"];
+
+   // var lis=["点","高丽丽"];//黑幕
+    //初始化奖品
+    var jiang=["一等奖:iphone6","二等奖:iphone5","三等奖:MAC","四等奖:徽章","参与奖：太阳伞","谢谢参与"];
+
+
+    //事件绑定
+    $("#start").click(function () {
+
+        $("#jiangPin").html("等待抽奖中");//初始化  点击停止时才会显示奖品
+        timer=setInterval(function () {
+            //随机切换人员姓名
+            var n=Math.floor(Math.random()*list.length);//随机出来的人名单
+            $("#box").html(list[n]);
+
+        },30);
+
+    });
+    //点击停止的时候
+    $("#stop").click(function () {
+          //把人名的定时器给清除掉
+        clearInterval(timer);
+
+
+       // var num=lis[Math.floor(Math.random()*lis.length)];
+    //    $("#box").html(num);//后加的步骤
+        //把中奖的人员名单扔出去，不能重复中奖
+    //    lis.splice(num,1);
+
+
+        //把中奖的人扔出去
+//        var num=list[Math.floor(Math.random()*list.length)];
+//        $("#box").html(num);
+//        list.splice(num,1);
+
+        //显示奖品和中奖的姓名
+        var n1=Math.floor(Math.random()*jiang.length);
+
+        //把随机的奖品显示在页面上
+        $("#jiangPin").html(jiang[n1]);
+    });
+
+</script>
+</html>

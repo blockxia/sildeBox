@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <script>
+        function createTable(date) {
+            var table=document.createElement("table");
+            var tr=document.createElement("tr");
+            for(var pp in date[0]){
+                var th=document.createElement("th");
+                th.textContent=pp;
+                tr.appendChild(th);
+            }
+            table.appendChild(tr);
+            for(var i=0;i<date.length;i++){
+                var trtow=document.createElement("tr");
+                for (var pom in date[i]){
+                    var tdtow=document.createElement("td");
+                    tdtow.textContent=date[i][pom];
+                    trtow.appendChild(tdtow);
+                }
+                table.appendChild(trtow);
+            }
+
+            document.body.appendChild(table);
+        }
+
+
+
+    </script>
+</body>
+</html>

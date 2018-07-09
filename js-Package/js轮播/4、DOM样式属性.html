@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        *
+        {
+            margin: 0;
+            padding: 0;
+        }
+        div
+        {
+            width: 100px;
+            height: 100px;
+            border: 1px solid #000000;
+            /*padding: 10px;*/
+            /*margin: 10px;*/
+            position: absolute;
+            background-color: deepskyblue;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        /*
+        *
+        * div.clientWidth  width+padding  不包含滚动条
+        *     offsetWidth  width+padding+border
+        *     scrollWidth 如果设置overflow是scroll，会有滚动条，这时它的值是内容的宽度
+        *    offsetLeft 边线外顶点距离父容器的位置
+        * */
+        var div=document.createElement("div");
+        document.body.appendChild(div);
+//        div.textContent="akjshdkjashdkajshdaksjdhaskjdhaskjdhaskjdh";
+//        div.style.overflow="scroll";
+//        console.log(div.clientWidth,div.offsetWidth,div.scrollWidth);
+//        console.log(div.offsetLeft,div.clientLeft);
+        div.addEventListener("click",clickHandler);
+        var bool=false;
+        setInterval(animation,16);
+        function clickHandler(e) {
+            e=e || window.event;
+            bool=!bool;
+        }
+        function animation() {
+            if(bool) return;
+            div.style.left=div.offsetLeft+1+"px";
+        }
+    </script>
+</body>
+</html>

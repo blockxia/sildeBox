@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <script>
+        var arr=["张三","李四","王五","赵六","孙七","钱八"];
+        var select=createSelecte(arr);
+        document.body.appendChild(select);
+        var input=document.createElement("input");
+        input.type="text";
+        document.body.appendChild(input);
+        var bn=document.createElement("button");
+        bn.textContent="添加";
+        document.body.appendChild(bn);
+        bn.addEventListener("click",clickHandler);
+        document.body.appendChild(document.createElement("br"));
+        var ul=document.createElement("ul");
+        document.body.appendChild(ul);
+
+        function createSelecte(list) {
+            var select=document.createElement("select");
+            for(var i=0;i<list.length;i++){
+                var option=document.createElement("option");
+                option.textContent=list[i];
+                select.appendChild(option);
+            }
+            return select;
+        }
+        
+        function clickHandler(e) {
+            e=e || window.event;
+            var names=select.selectedOptions[0].textContent;
+            var txt=input.value;
+            if(txt.trim().length===0)return;
+            var li=document.createElement("li");
+            li.textContent=names+":"+txt.trim();
+            li.style.width="400px";
+            li.style.height="30px";
+            li.style.lineHeight="30px";
+            var a=document.createElement("a");
+            a.href="#";
+            a.style.float="right";
+            a.textContent="删除";
+            a.addEventListener("click",removeLiHandler);
+            li.appendChild(a);
+            ul.appendChild(li);
+        }
+
+        function removeLiHandler(e) {
+            e=e || window.event;
+            this.parentElement.remove();
+        }
+    </script>
+</body>
+</html>
